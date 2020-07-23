@@ -4,8 +4,11 @@ MAINTAINER Leander Kunstmann <leander.kunstmann@gmx.de>
 ENV DEBIAN_FRONTEND noninteractive
 
 #INSTALL VIRTUALBOX 6.1
-
-RUN wget -q https://download.virtualbox.org/virtualbox/6.1.12/virtualbox-6.1_6.1.12-139181~Ubuntu~eoan_amd64.deb| apt-key add -
+RUN  apt-get update \
+  && apt-get install -y wget \
+  && apt-get install -y gnupg2 \
+  && rm -rf /var/lib/apt/lists/*
+RUN wget -q https://download.virtualbox.org/virtualbox/6.1.12/virtualbox-6.1_6.1.12-139181~Ubuntu~eoan_amd64.deb | apt-key add -
 RUN sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian xenial contrib" >> /etc/apt/sources.list.d/virtualbox.list'
 RUN apt-get update
 RUN apt-get install -y virtualbox-6.1|| /bin/true
