@@ -52,12 +52,8 @@ RUN chmod +x run.sh
 
 
 
-# docker run -d --privileged --name vbox -it --device /dev/vboxdrv:/dev/vboxdrv -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /tmp:/tmp -v ~/machines:/machines -p 3389:3389 vboxsystemd2 && docker exec -it vbox ./run.sh --vmname $vmname --remote $remote
-
-#VBoxManage setproperty vrdeextpack VNC
-#VBoxManage setproperty vrdeextpack "Oracle VM VirtualBox Extension Pack"
-#VBoxManage modifyvm "VM name" --vrdeproperty VNCPassword=secret
+# docker run -d --privileged --name vbox -it --device /dev/vboxdrv:/dev/vboxdrv -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /tmp:/tmp -v ~/machines:/machines -p 3389:3389 vboxsystemd2 && docker exec -it vbox ./run.sh
+#-e "vmname="ReactOS 0.4.9"
+#-e "remote=VNC"
 
 #docker run --name vbox_http --restart=always -p 80:80 -e VB_HOSTPORT=172.17.0.2:18083  -e VB_noAuth='true'   -d jazzdd/phpvirtualbox
-
-#docker run -d --privileged --name vbox -it --device /dev/vboxdrv:/dev/vboxdrv -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /tmp:/tmp -v ~/machines:/machines -p 3389:3389 -e "vmname=Xenix 386 2.3.4q" -e "remote=VNC" vboxsystemd2 && docker exec -it vbox ./run.sh
