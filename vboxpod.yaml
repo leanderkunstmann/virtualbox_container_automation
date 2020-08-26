@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vboxpod
+spec:
+  containers:
+    - image: localhost:32000/vboximage
+      name: vboxcontainer
+      ports:
+        - containerPort: 3389
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /dev/vboxdrv
+          name: driver
+        - mountPath: /sys/fs/cgroup:ro
+          name: cgroup
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /machines
+          name: machines
+  volumes:
+    - name: driver
+      hostPath:
+        path: /dev/vboxdrv
+    - name: cgroup
+      hostPath:
+        path: /sys/fs/cgroup
+    - name: tmp
+      hostPath:
+        path: /tmp
+    - name: machines
+      hostPath:
+        path: ~/machines
+
