@@ -9,6 +9,7 @@ RUN  apt-get update \
   && apt-get install -y gnupg2 \
   && apt -y install systemd \
   && apt-get install net-tools \
+  && apt-get install -y supervisor \
   && yes | apt-get install python \
   && apt -y install software-properties-common \
   && rm -rf /var/lib/apt/lists/*
@@ -39,6 +40,8 @@ RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=acc
     rm Oracle_VM_VirtualBox_Extension_Pack-6.1.12.vbox-extpack ;
 
 EXPOSE 3389/tcp
+EXPOSE 5091
+
 
 ENV vmname "Xenix 386 2.3.4q"
 ENV remote "Oracle VM VirtualBox Extension Pack"
@@ -46,12 +49,17 @@ ENV remote "Oracle VM VirtualBox Extension Pack"
 VOLUME /machines
 
 COPY run.sh /
+COPY wrapper.sh /
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN chmod +x run.sh
+RUN chmod +x wrapper.sh
+RUN chmod +x /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/run.sh"]
+#CMD ["/usr/bin/supervisord"]
+CMD ["/wrapper.sh"]
 
-
+#docker run --privileged --name vbox -it -v /dev/vboxdrv:/dev/vboxdrv -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /tmp:/tmp -v ~/machines:/machines -p 3389:3389 -p 5091:5091 -e remote="VNC" vboxsystemd2
 # docker run -d --privileged --name vbox -it -v /dev/vboxdrv:/dev/vboxdrv -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /tmp:/tmp -v ~/machines:/machines -p 3389:3389 vboxsystemd2 && docker exec -it vbox ./run.sh
 # microk8s kubectl run --image=vboximage vbox --port=3389
 #kubectl run vbox --image=localhost:32000/vboximage  --overrides='{"spec": {"template": {"spec": {"containers": [{"name": "vbox", "image": "localhost:32000/vboximage", "securityContext": {"privileged": true} }]}}}}
