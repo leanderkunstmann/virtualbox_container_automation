@@ -40,7 +40,7 @@ RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=acc
     rm Oracle_VM_VirtualBox_Extension_Pack-6.1.12.vbox-extpack ;
 
 EXPOSE 3389/tcp
-EXPOSE 5091
+EXPOSE 5901
 
 
 ENV vmname "Xenix 386 2.3.4q"
